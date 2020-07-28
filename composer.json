@@ -1,0 +1,39 @@
+{
+    "name": "byancode/settings",
+    "description": "Sync configs && BD.",
+    "keywords": ["laravel", "persistent", "settings", "config", "json"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Byancode",
+            "email": "byancode@gmail.com"
+        },
+        {
+            "name": "Andy Reynaldo",
+            "email": "rldev25@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "laravel/framework": ">=7.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Byancode\\Settings\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Byancode\\Settings\\Provider"
+            ],
+            "aliases": {
+                "Settings": "Byancode\\Settings\\Facade"
+            }
+        }
+    }
+}
