@@ -19,7 +19,7 @@ class Settings
     public function tags()
     {
         $this->appCache = \call_user_func_array([
-            $this, 'tags'
+            $this->appCache, 'tags'
         ], \func_get_args());
         # -------------------
         return $this;
