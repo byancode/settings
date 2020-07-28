@@ -51,7 +51,7 @@ class Settings
         # -------------------------
         $settings = $this->all();
         # -------------------------
-        \data_set($settings, $key, $override);
+        \data_set($settings, $key, $value, $override);
         # -------------------------
         $data = \array_map(function($value){
             return \json_encode($value) ?? $value;
@@ -62,7 +62,7 @@ class Settings
             self::flush();
             return true;
         } catch (\Throwable $th) {
-            $this->appCache->forever(self::cacheName, $data);
+            $this->appCache->forever(self::cacheName, $settings);
             return false;
         }
     }
@@ -86,5 +86,10 @@ class Settings
     public function __get($name)
     {
         return $this->get($name);
+    }
+    
+    public function __set($name, $value)
+    {
+        return $this->set($name, $value);
     }
 }
