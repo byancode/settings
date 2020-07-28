@@ -2,6 +2,7 @@
 
 namespace Byancode\Settings;
 
+use App\Setting;
 use Illuminate\Support\Facades\Cache;
 
 class Settings
