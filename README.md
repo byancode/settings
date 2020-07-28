@@ -9,21 +9,21 @@ This package allows you to save the configuration in a more persistent way. Use 
 Run the following command:
 
 ```bash
-composer require wimil/settings
+composer require byancode/settings
 ```
 
-### 2. Register (for Laravel < 5.5)
+### 2. Register (for Laravel > 7.0)
 
 Register the service provider in `config/app.php`
 
 ```php
-Wimil\Settings\Provider::class,
+Byancode\Settings\Provider::class,
 ```
 
 Add alias if you want to use the facade.
 
 ```php
-'Setting' => Wimil\Settings\Facade::class,
+'Setting' => Byancode\Settings\Facade::class,
 ```
 
 ### 3. Publish
@@ -31,7 +31,7 @@ Add alias if you want to use the facade.
 Publish config file.
 
 ```bash
-php artisan vendor:publish --provider="Wimil\Settings\Provider"
+php artisan vendor:publish --provider="Byancode\Settings\Provider"
 ```
 
 
