@@ -22,6 +22,8 @@ class Provider extends ServiceProvider
         $this->app->singleton('settings', function () {
             return new Settings();
         });
+
+        $this->app->settings->sync();
     }
     /**
      * Register the service provider.
