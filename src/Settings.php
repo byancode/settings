@@ -93,9 +93,10 @@ class Settings
         return $this->set($key, $data);
     }
 
-    public static function flush()
+    public function flush()
     {
-        return Cache::forget(self::cacheName);
+        Cache::forget(self::cacheName);
+        return $this->appCache->flush();
     }
 
     public function __get($name)
