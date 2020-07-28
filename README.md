@@ -12,7 +12,7 @@ Run the following command:
 composer require byancode/settings
 ```
 
-### 2. Register (for Laravel > 7.0)
+### 2. Register (for Laravel > 6.0)
 
 Register the service provider in `config/app.php`
 
@@ -46,17 +46,33 @@ You can either use the helper method like `settings('foo')` or the facade `Setti
 ### Facade
 
 ```php
-Settings::get('foo');
-Settings::set('foo', 'bar');
-$settings = Settings::all();
+# GETTER  
+Settings::get('foo');    
+Settings::get('foo.bar'); 
+Settings::get('foo__bar');
+
+# SETTER  
+Settings::set('foo', ['bar' => 'test']);
+Settings::set('foo.bar', 'test');
 ```
 
 ### Helper
 
 ```php
-settings('foo');
-settings('foo', 'bar');
 $settings = settings();
+
+# GETTER 
+settings('foo');
+$settings->foo;
+settings('foo.bar');
+$settings->foo__bar;
+$settings->get('foo.bar');
+
+# SETTER  
+settings('foo', ['bar' => 'test']);
+$settings->foo = ['bar' => 'test'];
+$settings->foo__bar = 'test';
+$settings->set('foo.bar', 'test');
 ```
 
 ### Blade Directive
