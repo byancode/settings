@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 class Settings
 {
-    private $cacheSetting;
+    private $appCache;
     const cacheName = 'app.settings';
     # ------------------------------
     public function __construct()
