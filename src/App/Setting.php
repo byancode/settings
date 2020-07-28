@@ -1,6 +1,6 @@
 <?php
 
-namespace Byancode\Settings;
+namespace Byancode\App;
 
 use Illuminate\Database\Eloquent\Model;
 
