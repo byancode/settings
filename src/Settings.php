@@ -25,7 +25,7 @@ class Settings
     # ------------------------------
     public function all()
     {
-        return $this->appCache->remember(self::cacheName, function () {
+        return $this->appCache->rememberForever(self::cacheName, function () {
             try {
                 return Setting::get()->mapWithKeys(function ($item) {
                     return [$item['key'] => $item['value']];
