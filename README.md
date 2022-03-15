@@ -41,19 +41,19 @@ You can change the options of your app from `config/settings.php` file
 
 ## Usage
 
-You can either use the helper method like `settings('foo')` or the facade `Settings::val('foo')`
+You can either use the helper method like `settings('foo')` or the facade `Settings::get('foo')`
 
 ### Facade
 
 ```php
 # GETTER  
-Settings::val('foo');    
-Settings::val('foo.bar'); 
-Settings::val('foo__bar');
+Settings::get('foo');    
+Settings::get('foo.bar'); 
+Settings::get('foo__bar');
 
 # SETTER  
-Settings::put('foo', ['bar' => 'test']);
-Settings::put('foo.bar', 'test');
+Settings::set('foo', ['bar' => 'test']);
+Settings::set('foo.bar', 'test');
 ```
 
 ### Helper
@@ -66,13 +66,13 @@ settings('foo');
 $settings->foo;
 settings('foo.bar');
 $settings->foo__bar;
-$settings->val('foo.bar');
+$settings->get('foo.bar');
 
 # SETTER  
 settings('foo', ['bar' => 'test']);
 $settings->foo = ['bar' => 'test'];
 $settings->foo__bar = 'test';
-$settings->put('foo.bar', 'test');
+$settings->set('foo.bar', 'test');
 ```
 
 ### Blade Directive

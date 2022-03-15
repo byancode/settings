@@ -9,9 +9,9 @@ if (!function_exists('settings')) {
             return app('settings');
 
         if (!empty($key) && !empty($value))
-            return app('settings')->put($key, $value, $override);
+            return app('settings')->set($key, $value, $override);
 
-        return app('settings')->val($key);
+        return app('settings')->get($key);
     }
 }
 
