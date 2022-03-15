@@ -43,13 +43,23 @@ class Settings
         });
     }
 
+    public function value(string $key = null, $default = null)
+    {
+        return $this->val($key, $default);
+    }
+
     public function get(string $key = null, $default = null)
+    {
+        return $this->val($key, $default);
+    }
+
+    public function val(string $key = null, $default = null)
     {
         $key = str_replace('__', '.', $key);
         return \data_get($this->all(), $key) ?? \config($key) ?? $default;
     }
 
-    public function set(string $key, $value, bool $override = true) : bool
+    public function put(string $key, $value, bool $override = true) : bool
     {
         $key = str_replace('__', '.', $key);
         $keybase = \explode('.', $key);
@@ -84,13 +94,13 @@ class Settings
 
     public function push(string $key, $value) : bool
     {
-        $data = $this->get($key);
+        $data = $this->val($key);
         # -----------------------
         if (\is_array($data)) {
             $data[] = $value;
         }
         # -----------------------
-        return $this->set($key, $data);
+        return $this->put($key, $data);
     }
 
     public function flush()
@@ -101,11 +111,11 @@ class Settings
 
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->val($name);
     }
 
     public function __set($name, $value)
     {
-        return $this->set($name, $value);
+        return $this->put($name, $value);
     }
 }
