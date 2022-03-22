@@ -2,28 +2,13 @@
 
 namespace Byancode\Settings;
 
-use Illuminate\Support\Arr;
 use Byancode\Settings\App\Setting;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Settings
 {
-    private $cache;
     const key = 'app.settings';
-    # ------------------------------
-    public function __construct()
-    {
-        $this->cache = \app('cache');
-    }
-
-    public function tags()
-    {
-        $this->cache = \call_user_func_array([
-            $this->cache, 'tags'
-        ], \func_get_args());
-        # -------------------
-        return $this;
-    }
 
     public function load()
     {
@@ -32,15 +17,13 @@ class Settings
                 return [$item['key'] => $item['value']];
             })->all();
         } catch (\Throwable $th) {
-            return [];
+            return null;
         }
     }
 
     public function all()
     {
-        return $this->cache->rememberForever(self::key, function () {
-            return $this->load();
-        });
+        return Cache::get(self::key) ?? $this->sync();
     }
 
     public function update(array $data, bool $override = true)
@@ -69,25 +52,31 @@ class Settings
         $value = json_encode($settings[$key]);
         # -------------------------
         try {
-            Setting::getQuery()->updateOrInsert(
+            DB::Setting::getQuery()->updateOrInsert(
                 compact('key'),
                 compact('value')
             );
-            $this->cache->flush();
+            Cache::forget(self::key);
             return true;
         } catch (\Throwable $th) {
-            $this->cache->forever(self::key, $settings);
+            Cache::forever(self::key, $settings);
             return false;
         }
     }
 
     public function sync()
     {
-        $settings = $this->all();
+        $settings = $this->load();
         # ------------------------
-        foreach (\array_flaten_keys($settings) as  $keys) {
-            \config([$keys => \data_get($settings, $keys)]);
-        };
+        if (is_null($settings)) {
+            return [];
+        }
+        # ------------------------
+        \config(\array_flaten_keys($settings));
+        # ------------------------
+        Cache::forever(self::key, $settings);
+        # ------------------------
+        return $settings;
     }
 
     public function push(string $key, $value): bool
