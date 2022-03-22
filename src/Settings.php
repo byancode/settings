@@ -57,8 +57,10 @@ class Settings
         $settings = $this->all();
         # -------------------------
         \data_set($settings, $keys, $data, $override);
+        \config([$keys => $data]);
         # -------------------------
         $value = json_encode($settings[$key]);
+        # -------------------------
         try {
             Setting::getQuery()->updateOrInsert(
                 compact('key'),
