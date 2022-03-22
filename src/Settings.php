@@ -15,7 +15,7 @@ class Settings
     {
         $this->appCache = \app('cache');
     }
-    
+
     public function tags()
     {
         $this->appCache = \call_user_func_array([
@@ -24,7 +24,7 @@ class Settings
         # -------------------
         return $this;
     }
-    
+
     public function load()
     {
         try {
@@ -35,7 +35,7 @@ class Settings
             return [];
         }
     }
-    
+
     public function all()
     {
         return $this->appCache->rememberForever(self::cacheName, function () {
@@ -49,7 +49,7 @@ class Settings
         return \data_get($this->all(), $key) ?? \config($key) ?? $default;
     }
 
-    public function set(string $key, $value, bool $override = true) : bool
+    public function set(string $key, $value, bool $override = true): bool
     {
         $key = str_replace('__', '.', $key);
         $keybase = \explode('.', $key);
@@ -59,7 +59,7 @@ class Settings
         # -------------------------
         \data_set($settings, $key, $value, $override);
         # -------------------------
-        $data = \array_map(function($value){
+        $data = \array_map(function ($value) {
             return \json_encode($value) ?? $value;
         }, $settings);
         # -------------------------
@@ -77,12 +77,12 @@ class Settings
     {
         $settings = $this->all();
         # ------------------------
-        foreach (\array_to_data_keys($settings) as  $keys) {
-            \config([ $keys => \data_get($settings, $keys) ]);
+        foreach (\array_flaten_keys($settings) as  $keys) {
+            \config([$keys => \data_get($settings, $keys)]);
         };
     }
 
-    public function push(string $key, $value) : bool
+    public function push(string $key, $value): bool
     {
         $data = $this->get($key);
         # -----------------------

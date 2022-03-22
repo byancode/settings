@@ -16,22 +16,20 @@ if (!function_exists('settings')) {
 }
 
 
-if (!function_exists('array_to_data_keys')) {
-
-    function array_to_data_keys(array $array)
+if (!function_exists('array_flaten_keys')) {
+    function array_flaten_keys(array $array, array $subs = [])
     {
         $result = [];
-        # -----------
         foreach ($array as $key => $value) {
-            $result[$key][] = $key;
-            if (is_array($value) && \Illuminate\Support\Arr::isAssoc($value)) {
-                foreach (array_to_data_keys($value) as $subkey) {
-                    $result[$key][] = $subkey;
-                }
+            $list = $subs;
+            $list[] = $key;
+            $keys = join('.', $list);
+            if (is_array($value)) {
+                $result += array_flaten_keys($value, [$keys]);
+            } else {
+                $result[$keys] = $value;
             }
         }
-        return array_values(array_map(function($keys) {
-            return \join('.', $keys);
-        }, $result));
+        return $result;
     }
 }
