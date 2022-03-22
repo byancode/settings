@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\Cache;
 
 class Settings
 {
-    private $appCache;
-    const cacheName = 'app.settings';
+    private $cache;
+    const key = 'app.settings';
     # ------------------------------
     public function __construct()
     {
-        $this->appCache = \app('cache');
+        $this->cache = \app('cache');
     }
 
     public function tags()
     {
-        $this->appCache = \call_user_func_array([
-            $this->appCache, 'tags'
+        $this->cache = \call_user_func_array([
+            $this->cache, 'tags'
         ], \func_get_args());
         # -------------------
         return $this;
@@ -38,7 +38,7 @@ class Settings
 
     public function all()
     {
-        return $this->appCache->rememberForever(self::cacheName, function () {
+        return $this->cache->rememberForever(self::key, function () {
             return $this->load();
         });
     }
@@ -73,10 +73,10 @@ class Settings
                 compact('key'),
                 compact('value')
             );
-            self::flush();
+            $this->cache->flush();
             return true;
         } catch (\Throwable $th) {
-            $this->appCache->forever(self::cacheName, $settings);
+            $this->cache->forever(self::key, $settings);
             return false;
         }
     }
@@ -99,12 +99,6 @@ class Settings
         }
         # -----------------------
         return $this->set($key, $data);
-    }
-
-    public function flush()
-    {
-        Cache::forget(self::cacheName);
-        return $this->appCache->flush();
     }
 
     public function __get($name)
