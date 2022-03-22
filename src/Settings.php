@@ -43,28 +43,27 @@ class Settings
         });
     }
 
-    public function get(string $key = null, $default = null)
+    public function get(string $key = '*', $default = null)
     {
         $key = str_replace('__', '.', $key);
         return \data_get($this->all(), $key) ?? \config($key) ?? $default;
     }
 
-    public function set(string $key, $value, bool $override = true): bool
+    public function set(string $keys, $data, bool $override = true): bool
     {
-        $key = str_replace('__', '.', $key);
-        $keybase = \explode('.', $key);
-        $keybase = \current($keybase);
+        $keys = str_replace('__', '.', $keys);
+        $key = strstr($keys, '.', true);
         # -------------------------
         $settings = $this->all();
         # -------------------------
-        \data_set($settings, $key, $value, $override);
+        \data_set($settings, $keys, $data, $override);
         # -------------------------
-        $data = \array_map(function ($value) {
-            return \json_encode($value) ?? $value;
-        }, $settings);
-        # -------------------------
+        $value = json_encode($settings[$key]);
         try {
-            Setting::getQuery()->updateOrInsert($keybase == '*' ? $data : $data[$keybase]);
+            Setting::getQuery()->updateOrInsert(
+                compact('key'),
+                compact('value')
+            );
             self::flush();
             return true;
         } catch (\Throwable $th) {
