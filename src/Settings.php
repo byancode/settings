@@ -51,15 +51,15 @@ class Settings
         # -------------------------
         $value = json_encode($settings[$key]);
         # -------------------------
+        Cache::forever(self::key, $settings);
+        # -------------------------
         try {
-            DB::Setting::getQuery()->updateOrInsert(
+            Setting::getQuery()->updateOrInsert(
                 compact('key'),
                 compact('value')
             );
-            Cache::forget(self::key);
             return true;
         } catch (\Throwable $th) {
-            Cache::forever(self::key, $settings);
             return false;
         }
     }
