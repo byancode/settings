@@ -42,7 +42,7 @@ class Settings
     public function set(string $keys, $data, bool $override = true): bool
     {
         $keys = str_replace('__', '.', $keys);
-        $key = strstr($keys, '.', true);
+        $key = explode('.', $keys)[0];
         # -------------------------
         $settings = $this->all();
         # -------------------------
