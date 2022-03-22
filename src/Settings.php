@@ -43,6 +43,13 @@ class Settings
         });
     }
 
+    public function update(array $data, bool $override = true)
+    {
+        foreach ($data as $key => $value) {
+            $this->set($key, $value, $override);
+        }
+    }
+
     public function get(string $key = '*', $default = null)
     {
         $key = str_replace('__', '.', $key);

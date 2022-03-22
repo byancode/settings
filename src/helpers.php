@@ -1,24 +1,33 @@
 <?php
 
 if (!function_exists('setting')) {
-    function setting($key = null, $value = null, bool $override = true)
+    function setting($key = null, $default = null)
     {
-        return settings($key, $value, $override);
+        if (is_null($key)) {
+            return app('settings');
+        }
+
+        if (is_array($key)) {
+            return app('settings')->update($key);
+        }
+
+        return app('settings')->get($key, $default);
     }
 }
 
 if (!function_exists('settings')) {
 
-    function settings($key = null, $value = null, bool $override = true)
+    function settings($key = null, $default = null)
     {
-
-        if (empty($key))
+        if (is_null($key)) {
             return app('settings');
+        }
 
-        if (!empty($key) && !empty($value))
-            return app('settings')->set($key, $value, $override);
+        if (is_array($key)) {
+            return app('settings')->update($key);
+        }
 
-        return app('settings')->get($key);
+        return app('settings')->get($key, $default);
     }
 }
 
