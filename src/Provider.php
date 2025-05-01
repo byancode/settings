@@ -3,8 +3,7 @@
 namespace Byancode\Settings;
 
 use Illuminate\Support\ServiceProvider;
-
-//use Wimil\Settings\Settings;
+use Illuminate\Support\Facades\Blade;
 
 class Provider extends ServiceProvider
 {
@@ -24,6 +23,10 @@ class Provider extends ServiceProvider
         });
 
         $this->app->settings->sync();
+
+        Blade::directive('setting', function ($expression) {
+            return "<?php echo setting($expression); ?>";
+        });
     }
     /**
      * Register the service provider.

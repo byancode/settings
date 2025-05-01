@@ -16,18 +16,9 @@ if (!function_exists('setting')) {
 }
 
 if (!function_exists('settings')) {
-
     function settings($key = null, $default = null)
     {
-        if (is_null($key)) {
-            return app('settings');
-        }
-
-        if (is_array($key)) {
-            return app('settings')->update($key);
-        }
-
-        return app('settings')->get($key, $default);
+        return setting($key, $default);
     }
 }
 
